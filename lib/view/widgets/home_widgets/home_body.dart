@@ -6,22 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class HomeBody extends StatelessWidget {
-   HomeBody({Key? key}) : super(key: key);
+  HomeBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String? prevDay;
-    String today = DateFormat("EEE, MMM d, y").format(DateTime.now());
-    String yesterday = DateFormat("EEE, MMM d, y")
-        .format(DateTime.now().add(Duration(days: -1)));
-
+    Trans trans = Trans();
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
-            child: Container(
+            child: SizedBox(
               height: 30,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,7 +52,7 @@ class HomeBody extends StatelessWidget {
                             color: Colors.green),
                       ),
                       Text(
-                        "-£250",
+                        "-"+getAllSum(trans).toString(),
                         style: Theme.of(context).textTheme.subtitle2!.copyWith(
                             fontWeight: FontWeight.w500, fontSize: 12),
                       )
@@ -68,21 +64,27 @@ class HomeBody extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: transactions.length,
+              itemCount: trans.names.length,
               itemBuilder: (context, index) {
-                Transaction transaction = transactions[index];
-                DateTime date = DateTime.fromMillisecondsSinceEpoch(
-                    transaction.createdMillis);
-                String dateString = DateFormat("EEE, MMM d, y").format(date);
+                bool showHeader;
+                double totalExc = 0;
 
-                if (today == dateString) {
-                  dateString = "Today";
-                } else if (yesterday == dateString) {
-                  dateString = "Yesteday";
+                
+
+                if (index == 0) {
+                  totalExc = trans.amounts[0] + trans.amounts[1];
+                  showHeader = true;
+                } else if (index + 1 < trans.dates.length && index != 0) {
+                  if (DateFormat("d").format(trans.dates[index]) ==
+                      DateFormat("d").format(trans.dates[index - 1])) {
+                    showHeader = false;
+                  } else {
+                    totalExc = trans.amounts[2] + trans.amounts[3] + trans.amounts[4]+trans.amounts[5];
+                    showHeader = true;
+                  }
+                } else {
+                  showHeader = false;
                 }
-
-                bool showHeader = prevDay != dateString;
-                prevDay = dateString;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -95,7 +97,8 @@ class HomeBody extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  dateString,
+                                  DateFormat('d.MM.yyyy')
+                                      .format(trans.dates[index]),
                                   style: Theme.of(context)
                                       .textTheme
                                       .subtitle2!
@@ -105,10 +108,10 @@ class HomeBody extends StatelessWidget {
                                       ),
                                 ),
                                 Text(
-                                  NumberFormat(" £###,###,##").format(2400),
+                                  (-totalExc).toString(),
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle2!
+                                      .subtitle2! 
                                       .copyWith(
                                         color: Colors.black54,
                                         fontWeight: FontWeight.bold,
@@ -118,7 +121,13 @@ class HomeBody extends StatelessWidget {
                             ),
                           )
                         : const Offstage(),
-                    TransactionDetails(transaction: transaction),
+                    TransactionDetails(
+                      amount: (-trans.amounts[index]),
+                      cart: trans.carts[index],
+                      date: trans.dates[index],
+                      imageUrl: trans.images[index],
+                      name: trans.names[index],
+                    ),
                   ],
                 );
               },
@@ -128,22 +137,29 @@ class HomeBody extends StatelessWidget {
       ),
     );
   }
-List<Transaction> transactions = List.generate(20, (index) {
-  bool isRedeem = Random().nextBool();
-  String name = isRedeem ? "Redeem PS" : "Awarded Point";
-  double amount = 12506;
-  return Transaction(
-      name: name,
-      amount: amount,
-      createdMillis: DateTime.now()
-          .add(Duration(
-            days: -Random().nextInt(7),
-            hours: -Random().nextInt(23),
-            minutes: -Random().nextInt(59),
-          ))
-          .millisecondsSinceEpoch);
-})
-  ..sort((v1, v2) => v2.createdMillis - v1.createdMillis);
 
+  List<Transaction> transactions = List.generate(20, (index) {
+    bool isRedeem = Random().nextBool();
+    String name = isRedeem ? "Redeem PS" : "Awarded Point";
+    double amount = 12506;
+    return Transaction(
+        name: name,
+        amount: amount,
+        createdMillis: DateTime.now()
+            .add(Duration(
+              days: -Random().nextInt(7),
+              hours: -Random().nextInt(23),
+              minutes: -Random().nextInt(59),
+            ))
+            .millisecondsSinceEpoch);
+  })
+    ..sort((v1, v2) => v2.createdMillis - v1.createdMillis);
 
+  getAllSum(Trans trans) {
+    var sum = 0.0;
+    for (double n in trans.amounts){
+      sum += n;
+    }
+    return sum;
+  }
 }

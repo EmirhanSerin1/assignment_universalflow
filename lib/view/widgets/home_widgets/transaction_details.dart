@@ -1,16 +1,24 @@
-
-import 'package:assignment_universalflow/model/transaction_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class TransactionDetails extends StatelessWidget {
+class TransactionDetails extends StatefulWidget {
   const TransactionDetails({
     Key? key,
-    required this.transaction,
+    required this.name,
+    required this.date,
+    required this.amount,
+    required this.cart,
+    required this.imageUrl,
   }) : super(key: key);
 
-  final Transaction transaction;
+  final String name, cart, imageUrl;
+  final double amount;
+  final DateTime date;
+  @override
+  State<TransactionDetails> createState() => _TransactionDetailsState();
+}
 
+class _TransactionDetailsState extends State<TransactionDetails> {
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(
@@ -22,16 +30,14 @@ class TransactionDetails extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 8, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                 height: 60,
                 decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Colors.black, width: 1),
+                    border: Border.all(color: Colors.black, width: 1),
                     borderRadius: BorderRadius.circular(30)),
                 child: Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Row(
                       children: [
@@ -41,36 +47,31 @@ class TransactionDetails extends StatelessWidget {
                           decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey
-                                      .withOpacity(0.8),
+                                  color: Colors.grey.withOpacity(0.8),
                                   offset: const Offset(0, 3),
                                   blurRadius: 2,
                                 )
                               ],
                               shape: BoxShape.circle,
-                              image: const DecorationImage(
-                                  image: NetworkImage(
-                                      "https://randomuser.me/api/portraits/women/44.jpg"),
+                              image: DecorationImage(
+                                  image: AssetImage(widget.imageUrl),
                                   fit: BoxFit.cover)),
                         ),
                         const SizedBox(width: 15),
                         Column(
-                          mainAxisAlignment:
-                              MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment:
-                              CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Starbucks",
+                              widget.name,
                               style: Theme.of(context)
                                   .textTheme
                                   .subtitle1!
-                                  .copyWith(
-                                      fontWeight:
-                                          FontWeight.w600),
+                                  .copyWith(fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              "12:46, Feb 15 2021",
+                              DateFormat('hh:mm, MMMM dd, y')
+                                  .format(widget.date),
                               style: Theme.of(context)
                                   .textTheme
                                   .caption!
@@ -81,19 +82,18 @@ class TransactionDetails extends StatelessWidget {
                       ],
                     ),
                     Column(
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment:
-                          CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          NumberFormat(" £###,###,##")
-                              .format(transaction.amount),
+                          widget.amount.toString(),
                           style: Theme.of(context)
                               .textTheme
                               .subtitle2!
                               .copyWith(
-                                  color: Colors.red.shade700),
+                                  color: widget.amount < 0
+                                      ? Colors.red
+                                      : Colors.green),
                         ),
                         const Text(
                           "**** **** **** **34",
