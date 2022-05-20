@@ -95,8 +95,7 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         "-£250",
                         style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12),
+                            fontWeight: FontWeight.w500, fontSize: 12),
                       )
                     ],
                   )
@@ -126,17 +125,34 @@ class _HomePageState extends State<HomePage> {
                   children: <Widget>[
                     showHeader
                         ? Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 16),
-                            child: Text(
-                              dateString,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle2!
-                                  .copyWith(
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.only(
+                                left: 16, top: 12, right: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  dateString,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2!
+                                      .copyWith(
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                                Text(
+                                  NumberFormat(" £###,###,##")
+                                .format(2400),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2!
+                                      .copyWith(
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                              ],
                             ),
                           )
                         : Offstage(),
@@ -218,7 +234,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Container(
                           child: Text(
-                            NumberFormat(" £###,###,###")
+                            NumberFormat(" £###,###,##")
                                 .format(transaction.point),
                             style: Theme.of(context)
                                 .textTheme
