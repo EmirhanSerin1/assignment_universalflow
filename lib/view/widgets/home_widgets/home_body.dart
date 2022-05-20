@@ -6,15 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class HomeBody extends StatelessWidget {
-   HomeBody({Key? key}) : super(key: key);
+  HomeBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Trans trans = Trans();
     String? prevDay;
-    String today = DateFormat("EEE, MMM d, y").format(DateTime.now());
+    // String today = DateFormat("EEE, MMM d, y").format(DateTime.now());
+    DateTime today = DateTime.now();
     String yesterday = DateFormat("EEE, MMM d, y")
         .format(DateTime.now().add(Duration(days: -1)));
-
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: Column(
@@ -68,21 +69,20 @@ class HomeBody extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: transactions.length,
+              itemCount: trans.names.length,
               itemBuilder: (context, index) {
-                Transaction transaction = transactions[index];
-                DateTime date = DateTime.fromMillisecondsSinceEpoch(
-                    transaction.createdMillis);
-                String dateString = DateFormat("EEE, MMM d, y").format(date);
-
-                if (today == dateString) {
-                  dateString = "Today";
-                } else if (yesterday == dateString) {
-                  dateString = "Yesteday";
+                DateTime today = trans.dates[0];
+                DateTime previousDay =
+                    trans.dates[index].add(Duration(days: -1));
+                bool showHeader;
+                if (index < trans.dates.length - 1) {
+                  showHeader = DateFormat("d").format(trans.dates[index]) !=
+                          DateFormat("d").format(trans.dates[index + 1])
+                      ? true
+                      : false;
+                } else {
+                  showHeader = false;
                 }
-
-                bool showHeader = prevDay != dateString;
-                prevDay = dateString;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -95,7 +95,8 @@ class HomeBody extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  dateString,
+                                  DateFormat('d.MM.yyyy')
+                                      .format(trans.dates[index]),
                                   style: Theme.of(context)
                                       .textTheme
                                       .subtitle2!
@@ -118,7 +119,13 @@ class HomeBody extends StatelessWidget {
                             ),
                           )
                         : const Offstage(),
-                    TransactionDetails(transaction: transaction),
+                    TransactionDetails(
+                      amount: (-trans.amounts[index]),
+                      cart: trans.carts[index],
+                      date: trans.dates[index],
+                      imageUrl: trans.images[index],
+                      name: trans.names[index],
+                    ),
                   ],
                 );
               },
@@ -128,22 +135,27 @@ class HomeBody extends StatelessWidget {
       ),
     );
   }
-List<Transaction> transactions = List.generate(20, (index) {
-  bool isRedeem = Random().nextBool();
-  String name = isRedeem ? "Redeem PS" : "Awarded Point";
-  double amount = 12506;
-  return Transaction(
-      name: name,
-      amount: amount,
-      createdMillis: DateTime.now()
-          .add(Duration(
-            days: -Random().nextInt(7),
-            hours: -Random().nextInt(23),
-            minutes: -Random().nextInt(59),
-          ))
-          .millisecondsSinceEpoch);
-})
-  ..sort((v1, v2) => v2.createdMillis - v1.createdMillis);
 
+  List<Transaction> transactions = List.generate(20, (index) {
+    bool isRedeem = Random().nextBool();
+    String name = isRedeem ? "Redeem PS" : "Awarded Point";
+    double amount = 12506;
+    return Transaction(
+        name: name,
+        amount: amount,
+        createdMillis: DateTime.now()
+            .add(Duration(
+              days: -Random().nextInt(7),
+              hours: -Random().nextInt(23),
+              minutes: -Random().nextInt(59),
+            ))
+            .millisecondsSinceEpoch);
+  })
+    ..sort((v1, v2) => v2.createdMillis - v1.createdMillis);
 
+  getdailyChange(Trans trans, int index) {
+    var sum = 0.0;
+
+    return sum;
+  }
 }
