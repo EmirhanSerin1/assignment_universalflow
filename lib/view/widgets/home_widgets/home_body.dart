@@ -52,7 +52,7 @@ class HomeBody extends StatelessWidget {
                             color: Colors.green),
                       ),
                       Text(
-                        "-"+getAllSum(trans).toString(),
+                        "-" + getAllSum(trans).toString(),
                         style: Theme.of(context).textTheme.subtitle2!.copyWith(
                             fontWeight: FontWeight.w500, fontSize: 12),
                       )
@@ -69,8 +69,6 @@ class HomeBody extends StatelessWidget {
                 bool showHeader;
                 double totalExc = 0;
 
-                
-
                 if (index == 0) {
                   totalExc = trans.amounts[0] + trans.amounts[1];
                   showHeader = true;
@@ -79,7 +77,10 @@ class HomeBody extends StatelessWidget {
                       DateFormat("d").format(trans.dates[index - 1])) {
                     showHeader = false;
                   } else {
-                    totalExc = trans.amounts[2] + trans.amounts[3] + trans.amounts[4]+trans.amounts[5];
+                    totalExc = trans.amounts[2] +
+                        trans.amounts[3] +
+                        trans.amounts[4] +
+                        trans.amounts[5];
                     showHeader = true;
                   }
                 } else {
@@ -111,7 +112,7 @@ class HomeBody extends StatelessWidget {
                                   (-totalExc).toString(),
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle2! 
+                                      .subtitle2!
                                       .copyWith(
                                         color: Colors.black54,
                                         fontWeight: FontWeight.bold,
@@ -138,28 +139,19 @@ class HomeBody extends StatelessWidget {
     );
   }
 
-  List<Transaction> transactions = List.generate(20, (index) {
-    bool isRedeem = Random().nextBool();
-    String name = isRedeem ? "Redeem PS" : "Awarded Point";
-    double amount = 12506;
-    return Transaction(
-        name: name,
-        amount: amount,
-        createdMillis: DateTime.now()
-            .add(Duration(
-              days: -Random().nextInt(7),
-              hours: -Random().nextInt(23),
-              minutes: -Random().nextInt(59),
-            ))
-            .millisecondsSinceEpoch);
-  })
-    ..sort((v1, v2) => v2.createdMillis - v1.createdMillis);
-
+  
   getAllSum(Trans trans) {
     var sum = 0.0;
-    for (double n in trans.amounts){
+    for (double n in trans.amounts) {
       sum += n;
     }
+
     return sum;
   }
 }
+
+
+// List lale = trans.dates;
+//     lale.sort((a, b) {
+//       return a.compareTo(b);
+//     });
