@@ -46,5 +46,5 @@ Future<void> getData(BuildContext context) async {
 
   // Get data from docs and convert map to List
   final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-  Provider.of<Translar>(context, listen: false).setList(allData);
+  Provider.of<TransactionProvider>(context, listen: false).setList(allData);
 }

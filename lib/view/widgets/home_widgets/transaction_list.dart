@@ -29,7 +29,7 @@ class TransactionList extends StatelessWidget {
                       double totalExc = 0;
 
                       List allData =
-                          Provider.of<Translar>(context, listen: false).list;
+                          Provider.of<TransactionProvider>(context, listen: false).list;
 
                       if (index == 0) {
                         totalExc = double.parse(allData[0]["amount"]) +

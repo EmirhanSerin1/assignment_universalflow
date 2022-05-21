@@ -1,4 +1,5 @@
 import 'package:assignment_universalflow/model/transaction_model.dart';
+import 'package:assignment_universalflow/view/search/search_view.dart';
 import 'package:flutter/material.dart';
 
 class HomeTop extends StatelessWidget {
@@ -26,7 +27,7 @@ class HomeTop extends StatelessWidget {
                       .copyWith(fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(width: 10),
-                InkWell(onTap: () {}, child: const Icon(Icons.search))
+                InkWell(onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchPage()));}, child: const Icon(Icons.search))
               ],
             ),
             Row(
