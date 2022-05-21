@@ -56,7 +56,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                               ],
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                  image: AssetImage(widget.imageUrl),
+                                  image: NetworkImage(widget.imageUrl),
                                   fit: BoxFit.cover)),
                         ),
                         const SizedBox(width: 15),

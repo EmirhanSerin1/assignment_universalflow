@@ -1,8 +1,10 @@
 import 'package:assignment_universalflow/model/transaction_model.dart';
+import 'package:assignment_universalflow/provider/trans_prov.dart';
 import 'package:assignment_universalflow/view/widgets/home_widgets/transaction_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class HomeBody extends StatelessWidget {
   HomeBody({Key? key}) : super(key: key);
@@ -76,10 +78,8 @@ class HomeBody extends StatelessWidget {
                       bool showHeader;
                       double totalExc = 0;
 
-                      DocumentSnapshot doc = snapshot.data!.docs[index];
-                      
-
-
+                      getData(context);
+                      List allData = Provider.of<Translar>(context, listen: false).list;
                       if (index == 0) {
                         totalExc = trans.amounts[0] + trans.amounts[1];
                         showHeader = true;
@@ -135,11 +135,11 @@ class HomeBody extends StatelessWidget {
                                 )
                               : const Offstage(),
                           TransactionDetails(
-                            amount: (-trans.amounts[index]),
-                            cart: trans.carts[index],
-                            date: trans.dates[index],
-                            imageUrl: trans.images[index],
-                            name: trans.names[index],
+                            amount: (-double.parse(allData[index]["amount"])),
+                            cart: allData[index]["cartNumber"],
+                            date: DateTime.parse(allData[index]["time-stamp"]),
+                            imageUrl: allData[index]["image"],
+                            name: allData[index]["name"],
                           ),
                         ],
                       );
@@ -164,7 +164,21 @@ class HomeBody extends StatelessWidget {
   }
 }
 
+Future<void> getData(BuildContext context) async {
 
+  // Get docs from collection reference
+  QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+      .collection('transactions')
+      .orderBy("time-stamp", descending: true)
+      .get();
+
+  // Get data from docs and convert map to List
+  final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+  Provider.of<Translar>(context, listen: false).setList(allData);
+ 
+
+}
 // List lale = trans.dates;
 //     lale.sort((a, b) {
 //       return a.compareTo(b);
