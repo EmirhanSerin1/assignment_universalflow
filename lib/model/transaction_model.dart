@@ -1,14 +1,5 @@
-class Transaction {
-  String name;
-  double amount;
-  int createdMillis;
 
-  Transaction(
-      {required this.name, required this.amount, required this.createdMillis});
-  
-
-}
-
+// I started with this fake datas after connected firebase I am not using now
 class Trans{
   List<String> names=[
     "Starbucks",
