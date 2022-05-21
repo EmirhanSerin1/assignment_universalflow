@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "402270938585",
+    "project_id": "assignment-universalflow",
+    "storage_bucket": "assignment-universalflow.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:402270938585:android:fa78b522454cfd0ee7a5c8",
+        "android_client_info": {
+          "package_name": "com.example.assignment_universalflow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "402270938585-vj6uj06u6rcotmfr74di4uq7je27h3od.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCClXeJvgkeJB6Qrhk9o--BhVYhJBTIRhk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "402270938585-vj6uj06u6rcotmfr74di4uq7je27h3od.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -21,6 +21,8 @@ class TransactionDetails extends StatefulWidget {
 class _TransactionDetailsState extends State<TransactionDetails> {
   @override
   Widget build(BuildContext context) {
+    TextEditingController controller = TextEditingController(text: widget.cart);
+
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -54,7 +56,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                               ],
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                  image: AssetImage(widget.imageUrl),
+                                  image: NetworkImage(widget.imageUrl),
                                   fit: BoxFit.cover)),
                         ),
                         const SizedBox(width: 15),
@@ -86,7 +88,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          widget.amount.toString(),
+                          widget.amount.toString() + " ",
                           style: Theme.of(context)
                               .textTheme
                               .subtitle2!
@@ -95,9 +97,25 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                                       ? Colors.red
                                       : Colors.green),
                         ),
-                        const Text(
-                          "**** **** **** **34",
-                          style: TextStyle(fontSize: 8),
+                        SizedBox(
+                          height: 15,
+                          width: 62,
+                          child: Center(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: widget.cart,
+                                
+                                hintStyle:
+                                    TextStyle(color: Colors.black, fontSize: 8),
+                                border: InputBorder.none
+                                
+                              ),
+                              readOnly: true,
+                              enabled: false,
+                              controller: controller,
+                              style: const TextStyle(fontSize: 8),
+                            ),
+                          ),
                         )
                       ],
                     ),
